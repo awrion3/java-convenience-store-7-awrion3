@@ -243,40 +243,4 @@ public enum Products {
     public static int getRequest(Products product) {
         return product.request;
     }
-
-    @Override
-    public String toString() {
-        StringBuilder string = new StringBuilder();
-
-        string.append(String.format("- %s ", name));
-        string.append(String.format("%,d원 ", price));
-        string.append(checkQuantityFormat(quantity));
-        string.append(checkPromotionFormat(promotion));
-
-        return string.toString();
-    }
-
-    private String checkQuantityFormat(int quantity) {
-        String quantityFormat = null;
-
-        if (quantity != 0) {
-            quantityFormat = String.format("%d개", quantity);
-        }
-        if (quantity == 0) {
-            quantityFormat = "재고 없음";
-        }
-        return quantityFormat;
-    }
-
-    private String checkPromotionFormat(String promotion) {
-        String promotionFormat = null;
-
-        if (promotion != null) {
-            promotionFormat = String.format(" %s", promotion);
-        }
-        if (promotion == null) {
-            promotionFormat = "";
-        }
-        return promotionFormat;
-    }
 }
