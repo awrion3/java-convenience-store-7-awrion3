@@ -10,8 +10,52 @@ public class Output {
         System.out.println("안녕하세요. W편의점입니다.\n"
                 + "현재 보유하고 있는 상품입니다.\n");
         for (Products product : Products.values()) {
-            System.out.println(product);
+            System.out.println(formatStatusString(product));
         }
+    }
+
+    private static String formatStatusString(Products product) {
+        StringBuilder string = new StringBuilder();
+
+        string.append(checkNamePriceFormat(product));
+        string.append(checkQuantityFormat(product));
+        string.append(checkPromotionFormat(product));
+
+        return string.toString();
+    }
+
+    private static String checkNamePriceFormat(Products product) {
+        String name = Products.getName(product);
+        int price = Products.getPrice(product);
+
+        String namePriceformat = String.format("- %s %,d원 ", name, price);
+        return namePriceformat;
+    }
+
+    private static String checkQuantityFormat(Products product) {
+        int quantity = Products.getQuantity(product);
+        String quantityFormat = null;
+
+        if (quantity != 0) {
+            quantityFormat = String.format("%d개", quantity);
+        }
+        if (quantity == 0) {
+            quantityFormat = "재고 없음";
+        }
+        return quantityFormat;
+    }
+
+    private static String checkPromotionFormat(Products product) {
+        String promotion = Products.getPromotion(product);
+        String promotionFormat = null;
+
+        if (promotion != null) {
+            promotionFormat = String.format(" %s", promotion);
+        }
+        if (promotion == null) {
+            promotionFormat = "";
+        }
+        return promotionFormat;
     }
 
     public static void printReceipt(Manager manager, Cashier cashier) {
