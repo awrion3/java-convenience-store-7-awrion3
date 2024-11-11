@@ -85,6 +85,17 @@ public enum Promotions {
         return buy;
     }
 
+    public static int getGet(String promotionName) {
+        int get = 0;
+
+        for (Promotions promotion : Promotions.values()) {
+            if (promotion.name.equals(promotionName)) {
+                get = promotion.get;
+            }
+        }
+        return get;
+    }
+
     public LocalDateTime getStartDateTime() {
         return start_date.atStartOfDay();
     }
