@@ -5,7 +5,14 @@ import java.util.Map;
 import store.view.Exception;
 
 public class Order {
+    private static final String OPENING_CHARACTER = "[";
+    private static final String CLOSING_CHARACTER = "]";
+    private static final String SEPARATOR_CHARACTER = "-";
+    private static final String DELIMITER = ",";
+
     private static final int INDEX_UNIT = 1;
+    private static final int ZERO_VALUE = 0;
+
     private final Map<String, Integer> order;
 
     public Order(String orderRequest) {
@@ -18,18 +25,18 @@ public class Order {
         if (orderRequest == null || orderRequest.isEmpty()) {
             Exception.getInvalidInput();
         }
-        if (!orderRequest.contains("[") && !orderRequest.contains("]")) {
+        if (!orderRequest.contains(OPENING_CHARACTER) && !orderRequest.contains(CLOSING_CHARACTER)) {
             Exception.getInvalidFormat();
         }
-        if (!orderRequest.contains("-")) {
+        if (!orderRequest.contains(SEPARATOR_CHARACTER)) {
             Exception.getInvalidFormat();
         }
     }
 
     private void refineString(String orderRequest) {
-        String[] orders = orderRequest.split(",");
+        String[] orders = orderRequest.split(DELIMITER);
         for (String order : orders) {
-            int index = order.indexOf("-");
+            int index = order.indexOf(SEPARATOR_CHARACTER);
             String orderName = order.substring(INDEX_UNIT, index);
             String orderAmount = order.substring(index + INDEX_UNIT, order.length() - INDEX_UNIT);
 
@@ -55,7 +62,7 @@ public class Order {
     }
 
     private void validateAmountValue(String orderName, int amount) {
-        if (amount <= 0) {
+        if (amount <= ZERO_VALUE) {
             Exception.getInvalidFormat();
         }
         if (!isNotGreaterThanTotalQuantity(orderName, amount)) {
@@ -64,7 +71,7 @@ public class Order {
     }
 
     private boolean isNotGreaterThanTotalQuantity(String name, int amount) {
-        int totalQuantity = 0;
+        int totalQuantity = ZERO_VALUE;
         for (Products product : Products.values()) {
             String productName = Products.getName(product);
             int productQuantity = Products.getQuantity(product);
