@@ -117,9 +117,9 @@
     - [x] 추가 구매 여부 입력받기
 
 2. 출력
-    - [ ] 환영 인사 및 재고 상태 양식에 맞게 출력하기
+    - [x] 환영 인사 및 재고 상태 양식에 맞게 출력하기
         - 재고 없음, null 값 형식에 맞추기
-    - [ ] 영수증 양식에 맞게 출력하기
+    - [x] 영수증 양식에 맞게 출력하기
         - 구매 상품 내역, 증정 상품 내역, 금액 정보 내역 형식에 맞추어 출력하기
 
 3. 예외
@@ -194,11 +194,54 @@
 #### III. Controller
 
 1. 개점
-    - [ ] 매장 준비, 주문 확인, 매니저 호출, 캐셔 호출, 고객 확인 순으로 흐름 제어하기
-    - [ ] 잘못된 입력에 대해 반복 입력하도록 예외 처리하기
+    - [x] 매장 준비, 주문 확인, 매니저 호출, 캐셔 호출, 고객 확인 순으로 흐름 제어하기
+    - [x] 잘못된 입력에 대해 반복 입력하도록 예외 처리하기
 
 ---
 
 ### 구현 구조
+
+```
+src
+├─main
+│  ├─java
+│  │  └─store
+│  │      │  Application.java
+│  │      │  
+│  │      ├─controller
+│  │      │      Controller.java
+│  │      │      
+│  │      ├─model
+│  │      │      Cashier.java
+│  │      │      Customer.java
+│  │      │      Manager.java
+│  │      │      Order.java
+│  │      │      Products.java
+│  │      │      Promotions.java
+│  │      │      Storage.java
+│  │      │      
+│  │      └─view
+│  │             Exception.java
+│  │             Input.java
+│  │             Output.java
+│  │              
+│  └─resources
+│          products.md
+│          promotions.md
+│          
+└─test
+    └─java
+        └─store
+            │  ApplicationTest.java
+            │  
+            └─model
+                 CashierTest.java
+                 CustomerTest.java
+                 ManagerTest.java
+                 OrderTest.java
+                 ProductsTest.java
+                 PromotionsTest.java
+                 StorageTest.java
+```
 
 ---
