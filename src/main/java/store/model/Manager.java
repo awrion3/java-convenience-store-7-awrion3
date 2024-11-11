@@ -7,7 +7,7 @@ import store.view.Input;
 
 public class Manager {
     private static final int ZERO_VALUE = 0;
-    
+
     private final Map<Products, Integer> freePromotionQuantity;
     private final Map<Products, Integer> actualNoPromotionQuantity;
 
@@ -59,13 +59,23 @@ public class Manager {
         String promotionName = Products.getPromotion(product);
         int buy = Promotions.getBuy(promotionName);
         int get = Promotions.getGet(promotionName);
-        if ((orderAmount % (buy + get) == buy)) {
+        if ((orderAmount % (buy + get) == buy) && !isOverPromotionQuantity(product, get, orderAmount)) {
             String response = Input.askPlusOnePromotion(orderName);
             Customer customer = new Customer(response);
             if (customer.isResponseYes()) {
                 Products.addPlusOneToRequest(product);
             }
         }
+    }
+
+    private boolean isOverPromotionQuantity(Products product, int get, int orderAmount) {
+        boolean isOverPromotionQuantity = false;
+        int promotionQuantity = Products.getQuantity(product);
+
+        if (orderAmount + get > promotionQuantity) {
+            isOverPromotionQuantity = true;
+        }
+        return isOverPromotionQuantity;
     }
 
     private void checkNoPromotion(Products product, String orderName) {
