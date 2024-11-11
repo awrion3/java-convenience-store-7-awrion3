@@ -4,6 +4,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 public class Cashier {
+    private static final int DISCOUNT_LIMIT = 8000;
+    private static final double DISCOUNT_RATE = 0.3;
+    
     private int totalMemberDiscount;
     private int totalPromotionDiscount;
     private int totalCost;
@@ -41,10 +44,10 @@ public class Cashier {
     }
 
     private void calculateTotalMemberDiscountLimit() {
-        double totalMemberDiscountLimit = totalMemberDiscount * 0.3;
+        double totalMemberDiscountLimit = totalMemberDiscount * DISCOUNT_RATE;
 
-        if (totalMemberDiscountLimit > 8000) {
-            totalMemberDiscountLimit = 8000;
+        if (totalMemberDiscountLimit > DISCOUNT_LIMIT) {
+            totalMemberDiscountLimit = DISCOUNT_LIMIT;
         }
         totalMemberDiscount = (int) totalMemberDiscountLimit;
     }
