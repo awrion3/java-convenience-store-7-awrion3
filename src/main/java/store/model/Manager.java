@@ -6,6 +6,8 @@ import java.util.Map.Entry;
 import store.view.Input;
 
 public class Manager {
+    private static final int ZERO_VALUE = 0;
+    
     private final Map<Products, Integer> freePromotionQuantity;
     private final Map<Products, Integer> actualNoPromotionQuantity;
 
@@ -44,7 +46,7 @@ public class Manager {
     private void handleDefaultRequest(Products product, String orderName, int orderAmount) {
         Products.removeQuantity(orderName, orderAmount);
 
-        freePromotionQuantity.put(product, 0);
+        freePromotionQuantity.put(product, ZERO_VALUE);
         actualNoPromotionQuantity.put(product, orderAmount);
     }
 
@@ -56,8 +58,8 @@ public class Manager {
     private void checkPlusOnePromotion(Products product, String orderName, int orderAmount) {
         String promotionName = Products.getPromotion(product);
         int buy = Promotions.getBuy(promotionName);
-
-        if ((orderAmount % (buy + 1) == buy)) {
+        int get = Promotions.getGet(promotionName);
+        if ((orderAmount % (buy + get) == buy)) {
             String response = Input.askPlusOnePromotion(orderName);
             Customer customer = new Customer(response);
             if (customer.isResponseYes()) {
@@ -86,7 +88,7 @@ public class Manager {
         }
         actualNoPromotionQuantity.put(product, noPromotionAppliedRequest);
 
-        if (noPromotionAppliedRequest != 0) {
+        if (noPromotionAppliedRequest != ZERO_VALUE) {
             confirmNoPromotionAppliedRequest(product, noPromotionAppliedRequest);
         }
     }
@@ -94,7 +96,8 @@ public class Manager {
     private int calculateNoPromotionAppliedRequest(Products product, int orderRequest) {
         String promotionName = Products.getPromotion(product);
         int buy = Promotions.getBuy(promotionName);
-        int noPromotionRequest = orderRequest % (buy + 1);
+        int get = Promotions.getGet(promotionName);
+        int noPromotionRequest = orderRequest % (buy + get);
 
         return noPromotionRequest;
     }
@@ -115,16 +118,16 @@ public class Manager {
 
         if (!customer.isResponseYes()) {
             Products.removeNoPromotionFromRequest(product, noPromotionAppliedRequest);
-            actualNoPromotionQuantity.put(product, 0);
+            actualNoPromotionQuantity.put(product, ZERO_VALUE);
         }
     }
 
     private void checkFreePromotionQuantity(int beforeRequestPromotionQuantity, Products product) {
         String promotionName = Products.getPromotion(product);
         int buy = Promotions.getBuy(promotionName);
-
+        int get = Promotions.getGet(promotionName);
         int afterRequestPromotionQuantity = Products.getQuantity(product);
-        int freePromotionQuantity = (beforeRequestPromotionQuantity - afterRequestPromotionQuantity) / (buy + 1);
+        int freePromotionQuantity = (beforeRequestPromotionQuantity - afterRequestPromotionQuantity) / (buy + get);
 
         this.freePromotionQuantity.put(product, freePromotionQuantity);
     }
@@ -143,7 +146,7 @@ public class Manager {
         boolean isOutOfStockInMeasure = false;
         int measureValue = Products.getMeasure(product);
 
-        if (measureValue == 0) {
+        if (measureValue == ZERO_VALUE) {
             isOutOfStockInMeasure = true;
         }
         return isOutOfStockInMeasure;
