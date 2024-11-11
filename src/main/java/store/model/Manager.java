@@ -59,7 +59,7 @@ public class Manager {
         String promotionName = Products.getPromotion(product);
         int buy = Promotions.getBuy(promotionName);
         int get = Promotions.getGet(promotionName);
-        if ((orderAmount % (buy + get) == buy) && !isOverPromotionQuantity(product, get, orderAmount)) {
+        if ((orderAmount % (buy + get) == buy)) {
             String response = Input.askPlusOnePromotion(orderName);
             Customer customer = new Customer(response);
             if (customer.isResponseYes()) {
@@ -67,17 +67,7 @@ public class Manager {
             }
         }
     }
-
-    private boolean isOverPromotionQuantity(Products product, int get, int orderAmount) {
-        boolean isOverPromotionQuantity = false;
-        int promotionQuantity = Products.getQuantity(product);
-
-        if (orderAmount + get > promotionQuantity) {
-            isOverPromotionQuantity = true;
-        }
-        return isOverPromotionQuantity;
-    }
-
+    
     private void checkNoPromotion(Products product, String orderName) {
         Products.updateMeasureFromQuantity();
         int orderRequest = Products.getRequest(product);
